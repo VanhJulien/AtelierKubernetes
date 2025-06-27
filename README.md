@@ -73,20 +73,16 @@ kubectl get pods -n dev
 kubectl get pods -n prod
 ```
 
-### Vérifier les variables d’environnement injectées dans l’application :
-```bash
-kubectl exec -it -n dev <pod-name> -- printenv | grep DB_
-```
-
-### Tester l’accès HTTP à l’application (localement) :
+### Tester l’accès HTTP à l’application (localement sur le port 8080, à modifier si besoin) :
 ```bash
 kubectl port-forward svc/nodeapi-dev 8080:80 -n dev
-curl http://localhost:8080
 ```
+
+Puis aller sur : http://localhost:8080
 
 Résultat attendu :
 ```
-Welcome to nginx!
+Page Hello World
 ```
 
 ---
@@ -128,11 +124,11 @@ postgres:
 
 quota:
   requests:
-    cpu: "200m"
-    memory: "256Mi"
+    cpu: "600m"
+    memory: "768Mi"
   limits:
-    cpu: "500m"
-    memory: "512Mi"
+    cpu: "1"
+    memory: "1Gi"
 
 limitRange:
   defaultRequest:
@@ -145,7 +141,7 @@ limitRange:
 
 ---
 
-## 🧠 Remarques pédagogiques
+## 🧠 Remarques
 
 - L’application n’utilise **pas réellement PostgreSQL** (image Nginx).
 - Mais la base est bien déployée, exposée, et les variables d’environnement sont injectées comme si l’app y accédait.
