@@ -1,0 +1,60 @@
+env: prod
+
+image:
+  repository: nginxdemos/hello
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+envVars:
+  DB_HOST: nodeapi-postgres
+  DB_NAME: nodeapidb
+  DB_USER: produser
+  DB_PASSWORD: prodpass
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "300m"
+  limits:
+    memory: "1Gi"
+    cpu: "1"
+
+postgres:
+  image: postgres:13
+  storage: 5Gi
+  user: produser
+  password: prodpass
+  dbName: nodeapidb
+
+quota:
+  requests:
+    cpu: "1"
+    memory: "1Gi"
+  limits:
+    cpu: "2"
+    memory: "2Gi"
+
+limitRange:
+  defaultRequest:
+    cpu: "300m"
+    memory: "512Mi"
+  default:
+    cpu: "1"
+    memory: "1Gi"
+
+serviceAccount:
+  create: true
+  name: ""
+
+ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80

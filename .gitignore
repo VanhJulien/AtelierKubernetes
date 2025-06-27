@@ -1,0 +1,18 @@
+# Helm build files
+*.tgz
+rendered-*.yaml
+
+# Environnement
+.env
+.env.*
+
+# Logs
+*.log
+
+# Node.js (si ton backend est en Node)
+node_modules/
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db

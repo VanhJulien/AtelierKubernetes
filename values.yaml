@@ -1,0 +1,68 @@
+# Environnement d'exécution (dev, prod, etc.)
+env: "CHOOSE_ENV"
+
+# Image de l'application NodeAPI
+image:
+  repository: nginxdemos/hello
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Type de service Kubernetes exposé
+service:
+  type: ClusterIP
+  port: 80
+
+# Variables d'environnement pour l'application Node.js
+envVars:
+  DB_HOST: "CHANGE_ME"
+  DB_NAME: "CHANGE_ME"
+  DB_USER: "CHANGE_ME"
+  DB_PASSWORD: "CHANGE_ME"
+
+# Limites de ressources pour le conteneur Node.js
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+# Paramètres pour le conteneur PostgreSQL
+postgres:
+  image: "postgres:13"
+  storage: "1Gi"
+  user: "CHANGE_ME"
+  password: "CHANGE_ME"
+  dbName: "CHANGE_ME"
+
+# Quotas globaux du namespace (via ResourceQuota)
+quota:
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+
+# Valeurs par défaut imposées aux conteneurs (via LimitRange)
+limitRange:
+  defaultRequest:
+    cpu: "100m"
+    memory: "128Mi"
+  default:
+    cpu: "500m"
+    memory: "512Mi"
+
+serviceAccount:
+  create: true
+  name: ""
+
+ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
